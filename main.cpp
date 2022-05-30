@@ -9,7 +9,7 @@ void Bubble_Sort(sf::RenderWindow& window, float arr[], int n){
         for (j = 0; j < n-i-1; j++) {
             if (arr[j] > arr[j+1]) {
                 std::swap(arr[j], arr[j+1]);
-                Sleep(100);
+               // Sleep(100);
                 window.clear();
                 for(p=0; p<n; p++) {
                     sf::RectangleShape Rect(sf::Vector2f(25.f, arr[p]));
@@ -17,7 +17,6 @@ void Bubble_Sort(sf::RenderWindow& window, float arr[], int n){
                     Rect.setFillColor(sf::Color::White);
                     window.draw(Rect);
                 }
-
                 window.display();
             }
         }
@@ -33,11 +32,25 @@ int main()
         int rndNum = 25 + rand()%400;
         arr[i] = float(rndNum);
     }
-    sf::RenderWindow window(sf::VideoMode(1100, 650), "BUBBLE FUCKING SORT!", sf::Style::Close | sf::Style::Titlebar | sf::Style::Resize);
+    sf::RenderWindow window(sf::VideoMode(1100, 650), "Sorting Algorithm Visualisation", sf::Style::Close | sf::Style::Titlebar | sf::Style::Resize);
     window.setFramerateLimit(60);
+
+    //button for bubble sort
+    sf::RectangleShape BubbleButton(sf::Vector2f(100.0f,50.0f));
+    BubbleButton.setPosition(10,10);
+    sf::Texture bubblePNG;
+    bubblePNG.loadFromFile("Bubble.png");
+    BubbleButton.setTexture(&bubblePNG);
+    bool buttonIsPressed = false;
 
     while (window.isOpen())
     {
+        sf::Vector2i mousePoz=sf::Mouse::getPosition(window);
+        if(buttonIsPressed == false) {
+            window.draw(BubbleButton);
+            window.display();
+        }
+
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -45,17 +58,26 @@ int main()
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) window.close();
         }
 
-        Bubble_Sort(window, arr, l);
-        window.clear();
-        for(int p=0; p<l; p++) {
-            sf::RectangleShape Rect(sf::Vector2f(25.f, arr[p]));
-            Rect.setPosition(10 + p * 30, window.getSize().y - arr[p] - 10);
-            Rect.setFillColor(sf::Color::Green);
+        if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        {
+            if (BubbleButton.getGlobalBounds().contains(mousePoz.x, mousePoz.y))
+            {
+                buttonIsPressed = true;
+                Bubble_Sort(window, arr, l);
+                window.clear();
 
-            window.draw(Rect);
+                for(int p=0; p<l; p++) {
+                    sf::RectangleShape Rect(sf::Vector2f(25.f, arr[p]));
+                    Rect.setPosition(10 + p * 30, window.getSize().y - arr[p] - 10);
+                    Rect.setFillColor(sf::Color::Green);
 
+                    window.draw(Rect);
+                }
+
+                window.display();
+            }
         }
-        window.display();
+
     }
 
     return 0;
