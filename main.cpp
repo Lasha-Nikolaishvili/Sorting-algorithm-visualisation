@@ -14,7 +14,6 @@ public:
             for (j = 0; j < n-i-1; j++) {
                 if (arr[j] > arr[j+1]) {
                     std::swap(arr[j], arr[j+1]);
-                   // Sleep(100);
                     window.clear();
                     for(p=0; p<n; p++) {
                         sf::RectangleShape Rect(sf::Vector2f(RectWidth, arr[p]));
@@ -31,6 +30,52 @@ public:
     bool showBubble(sf::RenderWindow& window, float arr[], int l, sf::RectangleShape& ResetButton)
     {
         Bubble_Sort(window, arr, l);
+        window.clear();
+
+        for(k=0; k<l; k++) {
+            sf::RectangleShape Rect(sf::Vector2f(RectWidth, arr[k]));
+            Rect.setPosition(10 + k * RectSpacing, window.getSize().y - arr[k] - 10);
+            Rect.setFillColor(sf::Color::Green);
+
+            window.draw(Rect);
+        }
+        window.draw(ResetButton);
+        window.display();
+
+        return true;
+    }
+};
+
+class SelectionSort {
+private:
+    int i, j, p, k, pos;
+    int RectSpacing = 11;
+    float RectWidth = 8.f;
+public:
+
+    void Selection_Sort(sf::RenderWindow& window, float arr[], int n)
+    {
+        for (i = 0; i < n - 1; i++)
+        {
+            pos = i;
+            for (j = i + 1; j < n; j++) {
+                if (arr[j] < arr[pos]) pos = j;
+                window.clear();
+                for(p=0; p<n; p++) {
+                    sf::RectangleShape Rect(sf::Vector2f(RectWidth, arr[p]));
+                    Rect.setPosition(10 + p * RectSpacing, window.getSize().y - arr[p] - 10);
+                    Rect.setFillColor((p==j || (arr[p]==arr[pos] && p < j))? (p==j)? sf::Color::Red : sf::Color::Blue : sf::Color::White);
+                    window.draw(Rect);
+                }
+                window.display();
+            }
+            std::swap (arr[pos], arr[i]);
+        }
+    }
+
+    bool showSelection(sf::RenderWindow& window, float arr[], int l, sf::RectangleShape& ResetButton)
+    {
+        Selection_Sort(window, arr, l);
         window.clear();
 
         for(k=0; k<l; k++) {
@@ -100,6 +145,7 @@ public:
 int main()
 {
     BubbleSort bubble;
+    SelectionSort selection;
     InsertionSort insertion;
     //Buttons button;
     srand(time(NULL));
@@ -109,20 +155,27 @@ int main()
         int rndNum = 25 + rand()%450;
         arr[i] = float(rndNum);
     }
-    sf::RenderWindow window(sf::VideoMode(1100, 650), "Sorting Algorithm Visualisation", sf::Style::Close | sf::Style::Titlebar);
+    sf::RenderWindow window(sf::VideoMode(1100, 650), "Sorting Algorithm Visualization", sf::Style::Close | sf::Style::Titlebar);
     window.setFramerateLimit(60);
 
-    //button for bubble sort
+ //button for bubble sort
     sf::RectangleShape BubbleButton(sf::Vector2f(100.0f,50.0f));
     BubbleButton.setPosition(10,10);
     sf::Texture bubblePNG;
     bubblePNG.loadFromFile("Bubble.png");
     BubbleButton.setTexture(&bubblePNG);
+    //button for selection sort
+    sf::RectangleShape SelectionButton(sf::Vector2f(100.0f,50.0f));
+    SelectionButton.setPosition(120,10);
+    sf::Texture selectionPNG;
+    selectionPNG.loadFromFile("Selection.png");
+    SelectionButton.setTexture(&selectionPNG);
     //button for insertion sort
     sf::RectangleShape InsertionButton(sf::Vector2f(100.0f,50.0f));
     InsertionButton.setPosition(230,10);
-    sf::Texture InsertionPNG;
-    InsertionButton.setFillColor(sf::Color::White);
+    sf::Texture insertionPNG;
+    insertionPNG.loadFromFile("Insertion.png");
+    InsertionButton.setTexture(&insertionPNG);
     //button for reset
     sf::RectangleShape ResetButton(sf::Vector2f(100.f, 50.f));
     ResetButton.setPosition(window.getSize().x-110, 10);
@@ -137,6 +190,7 @@ int main()
         if(buttonIsPressed == false) {
             window.draw(BubbleButton);
             window.draw(InsertionButton);
+            window.draw(SelectionButton);
             window.display();
         }
 
@@ -154,6 +208,11 @@ int main()
                 buttonIsPressed = bubble.showBubble(window,arr,l, ResetButton);
             }
 
+            if (SelectionButton.getGlobalBounds().contains(mousePoz.x, mousePoz.y))
+            {
+                buttonIsPressed = selection.showSelection(window,arr,l, ResetButton);
+            }
+
             if (InsertionButton.getGlobalBounds().contains(mousePoz.x, mousePoz.y))
             {
                 buttonIsPressed = insertion.showInsertion(window,arr,l, ResetButton);
@@ -163,8 +222,10 @@ int main()
             {
                 window.clear();
                 window.draw(BubbleButton);
+                window.draw(SelectionButton);
                 window.draw(InsertionButton);
                 window.display();
+
                 for(int i=0; i<l; i++) {
                     int rndNum = 25 + rand()%400;
                     arr[i] = float(rndNum);
