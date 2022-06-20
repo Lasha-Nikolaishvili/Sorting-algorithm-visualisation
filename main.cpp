@@ -3,11 +3,14 @@
 #include <stdlib.h>
 #include <time.h>
 
+float windowWidth=1100.0f, windowHeight=650.0f;
+int l = 75;
+
 class BubbleSort {
 private:
     int i, j, p, k;
-    int RectSpacing = 11;
-    float RectWidth = 8.f;
+    float RectSpacing = (windowWidth - 10)/(l);
+    float RectWidth = RectSpacing-2.0f;
 public:
     void Bubble_Sort(sf::RenderWindow& window, float arr[], int n){
         for (i = 0; i < n-1; i++) {
@@ -49,8 +52,8 @@ public:
 class SelectionSort {
 private:
     int i, j, p, k, pos;
-    int RectSpacing = 11;
-    float RectWidth = 8.f;
+    float RectSpacing = (windowWidth - 10)/(l);
+    float RectWidth = RectSpacing-2.0f;
 public:
 
     void Selection_Sort(sf::RenderWindow& window, float arr[], int n)
@@ -94,9 +97,9 @@ public:
 
 class InsertionSort {
 private:
-    int i, x, j, p, k, currIndex;
-    int RectSpacing = 11;
-    float RectWidth = 8.f;
+    int i, x, j, p, k;
+    float RectSpacing = (windowWidth - 10)/(l);
+    float RectWidth = RectSpacing-2.0f;
 public:
 
     void Insertion_Sort(sf::RenderWindow& window, float arr[], int n) {
@@ -149,13 +152,12 @@ int main()
     InsertionSort insertion;
     //Buttons button;
     srand(time(NULL));
-    int l = 99;
     float arr[l];
     for(int i=0; i<l; i++) {
         int rndNum = 25 + rand()%450;
         arr[i] = float(rndNum);
     }
-    sf::RenderWindow window(sf::VideoMode(1100, 650), "Sorting Algorithm Visualization", sf::Style::Close | sf::Style::Titlebar);
+    sf::RenderWindow window(sf::VideoMode(windowWidth + 10.0f, windowHeight), "Sorting Algorithm Visualization", sf::Style::Close | sf::Style::Titlebar);
     window.setFramerateLimit(60);
 
  //button for bubble sort
@@ -189,8 +191,8 @@ int main()
         sf::Vector2i mousePoz=sf::Mouse::getPosition(window);
         if(buttonIsPressed == false) {
             window.draw(BubbleButton);
-            window.draw(InsertionButton);
             window.draw(SelectionButton);
+            window.draw(InsertionButton);
             window.display();
         }
 
@@ -231,9 +233,7 @@ int main()
                     arr[i] = float(rndNum);
                 }
             }
-
         }
-
     }
 
     return 0;
