@@ -44,12 +44,10 @@
 			<Add option="-Wall" />
 			<Add option="-std=c++14" />
 			<Add option="-fexceptions" />
-			<Add directory="D:/Programming Libraries/SFML-2.5.1/include" />
-			<Add directory="C:/Users/pc/Desktop/C++/GRaphc/SFML-2.5.1/include" />
+			<Add directory="C:/Users/pc/Documents/libraries/SFML-2.5.1/include" />
 		</Compiler>
 		<Linker>
-			<Add directory="D:/Programming Libraries/SFML-2.5.1/lib" />
-			<Add directory="C:/Users/pc/Desktop/C++/GRaphc/SFML-2.5.1/lib" />
+			<Add directory="C:/Users/pc/Documents/libraries/SFML-2.5.1/lib" />
 		</Linker>
 		<Unit filename="main.cpp" />
 		<Unit filename="openal32.dll" />
